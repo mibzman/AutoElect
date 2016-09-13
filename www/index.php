@@ -1,3 +1,5 @@
+<!-- Copyright 2016 27thIsotope, all rights reserved.
+	This project was not made during, in conjunction with, or as a result of any classes or courses at The University of Akron -->
 <?php require "front_header.html"; ?>
     <!-- Header -->
     <div class="intro-header">
@@ -13,7 +15,7 @@
             </div>
 
         </div>
-        <!-- /.container -->
+        <!-- / blaaa.container -->
 
     </div>
     <!-- /.intro-header -->
