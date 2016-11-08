@@ -3,10 +3,10 @@
 require "header.php";
     //THIS IS THE CONSOLE THAT IS PRESENTED AT THE BEGENING OF THE YEAR
     
-    $servername = getenv('IP');
+    $servername = getenv('IP'); //hits localhost
     $username = "autoelect";
     $password = "elengomat";
-    $database = "AUTOELECT";
+    $database = "AUTOELECT"; //all database titles should be all caps
     $dbport = 3306;
     $isDocUploaded = true; //initialise flag that says whether jpg was uploaded
     $errorsOccurred = false;
@@ -16,7 +16,7 @@ require "header.php";
     if(isset($_GET['user'])){
         if ($db->connect_error) {
             session_start();
-            header("Location: https://autoelect-mibzman.c9users.io/login");
+            header("Location: /login");
             exit();
         }
         $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
