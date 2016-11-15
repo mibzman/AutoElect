@@ -20,7 +20,6 @@ require "header.php";
             }
     }else{
         //session_start();
-          //  header("Location: https://autoelect-mibzman.c9users.io/login");
             //exit();
     }
     

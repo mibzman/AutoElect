@@ -2,6 +2,7 @@
 <?php
 require "header.php";
     //THIS IS THE CONSOLE THAT IS PRESENTED AT THE BEGENING OF THE YEAR
+    //at the preset time AutoElect will send a link to the approperate administrator to this page
     
     $servername = getenv('IP'); //hits localhost
     $username = "autoelect";
@@ -13,7 +14,8 @@ require "header.php";
     
     $db = new mysqli($servername, $username, $password, $database, $dbport);
     
-    if(isset($_GET['user'])){
+    //TODO: replace with sessions
+    if(isset($_GET['user'])){ //checks if username is included as a GET request, should be a token that the admin got sent
         if ($db->connect_error) {
             session_start();
             header("Location: /login");
@@ -24,7 +26,8 @@ require "header.php";
             if($result != null){
                 //do different stuff depending on permission
             }
-    } elseif(is_array($_FILES['txtUploadFile']['error'])){
+    } elseif(is_array($_FILES['txtUploadFile']['error'])){ //after the file is uploaded the page reloads
+								//note: that means that someone could access this page by directly uploading a file without logging in.
          
         foreach($_FILES['txtUploadFile']['error'] as $key => $value) {
             if($_FILES['txtUploadFile']['name'][$key] != '') {
@@ -67,6 +70,7 @@ require "header.php";
             }
         }   //end of Main foreach
      
+	//I have no idea what this is or when it runs.  I've legitamly never seen it before -Sam
         $message = "\r\nMVC Uploader - New files were uploaded - with UNKNOWN errors";
         if($errorsOccurred) {
             echo '<p><input type="button" value="Go back" onclick="window.history.back();" />'.
@@ -78,6 +82,8 @@ require "header.php";
          
         echo '</div>';
         
+	//This inserts the data from the csv file we just uploaded into the database.  it is buggy and I don't know why.
+	//http://stackoverflow.com/questions/39070087/mysql-load-data-infile-field-mismatch
         $query = "LOAD DATA LOCAL INFILE '/var/www/$uploadedFile' INTO TABLE TROOPS FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (NUMBER,ADDRESS,COMMENT,SCOUTMASTER_NAME,SCOUTMASTER_EMAIL,COMMITTEE_NAME,COMMITTEE_EMAIL,DISTRICT) "; 
 	//This 'not allowed' error is probably caused by an issue with the default 'load data local' command being denied.  
 	//maybe use mysqli::real_connect
@@ -105,6 +111,7 @@ require "header.php";
         
      }
     
+    //if there not logged in
     else{
         session_start();
             header("Location: /login");
@@ -119,6 +126,7 @@ require "header.php";
     <!--  jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
+//this may not be needed
 <!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
 <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
 

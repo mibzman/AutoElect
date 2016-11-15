@@ -1,6 +1,8 @@
 
 <?php
     //THE FORM THAT GETS SENT TO SCOUTMASTERS
+    //TODO: make this do something instead of the nothing that it currently does
+
     
     //require "header2.php";
     $servername = getenv('IP');
@@ -8,8 +10,6 @@
     $password = "elengomat";
     $database = "AUTOELECT";
     $dbport = 3306;
-    $isDocUploaded = true; //initialise flag that says whether jpg was uploaded
-    $errorsOccurred = false;
     
     $db = new mysqli($servername, $username, $password, $database, $dbport);
     
