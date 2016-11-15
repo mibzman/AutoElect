@@ -24,9 +24,9 @@ $mail->AddReplyTo('autoelect17@gmail.com', 'Admin');
 $mail->Subject = 'Welcome to AutoElect';
 
 $servername = getenv('IP');
-$username = "autoelect";
-$password = "elengomat";
-$database = "AUTOELECT";
+$username = getenv('C9_USER');
+$password = "";
+$database = "c9";
 $dbport = 3306;
     
     $db = new mysqli($servername, $username, $password, $database, $dbport);
@@ -44,11 +44,11 @@ $dbport = 3306;
         echo $db->error;
         
         $mail->AddAddress($email , $name);
-        $mail->Body = $_POST['message'] . 'http://autoelect.ddns.net/signup?id=' . $token;
+        $mail->Body = $_POST['message'] . 'https://autoelect-mibzman.c9users.io/signup?id=' . $token;
         $mail->IsHTML(false);
 
         if(!$mail->Send()){
-            echo $mail->ErrorInfo;
+            //echo $mail->ErrorInfo;
         }else{ 
             $mail->ClearAddresses();
             $mail->ClearAttachments();

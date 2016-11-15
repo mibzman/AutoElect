@@ -1,9 +1,9 @@
 <?php
 require "front_header.html";
     $servername = getenv('IP');
-    $sqlusername = "autoelect";
-    $sqlpassword = "elengomat";
-    $database = "AUTOELECT";
+    $sqlusername = getenv('C9_USER');
+    $sqlpassword = "";
+    $database = "c9";
     $dbport = 3306;
     $name;
     $email = "";
@@ -27,7 +27,7 @@ require "front_header.html";
             }
         }else{
            session_start();
-            header("Location: /404");
+            header("Location: https://autoelect-mibzman.c9users.io/404");
             exit();
         }
     } elseif (isset($_POST['username'])) { //the second time is the actual login
@@ -39,7 +39,7 @@ require "front_header.html";
         
         if(check_for_user($username)){
             session_start();
-            header("Location: google.com");
+            header("Location: https://autoelect-mibzman.c9users.io/userexists");
             exit();
         }
         
@@ -51,14 +51,14 @@ require "front_header.html";
             $errorstring = $db->error;    
         }else{
             session_start();
-            header("Location: dash?user=" . $username);
+            header("Location: https://autoelect-mibzman.c9users.io/dash?user=" . $username);
             exit();
         }
         
     }
     else {
         session_start();
-        header("Location: 404");
+        header("Location: https://autoelect-mibzman.c9users.io/404");
         exit();
     }
     
@@ -67,12 +67,12 @@ require "front_header.html";
         $result = $db->query($query);
         if($result != null){
             //user already exists
-            //while($row = $result->fetch_assoc()){
+            while($row = $result->fetch_assoc()){
                 return true;
                 
             }
             return false;
-        
+        }
     }
 
 
@@ -83,7 +83,7 @@ require "front_header.html";
         <div class="row">
             <div class="col-lg-12">
                 <div class="intro-message" style="padding-top: 10%">
-                        <form class="form-horizontal text-center" role="form" action="" method="POST">
+                        <form class="form-horizontal text-center" role="form" action="signup" method="POST">
                             <h1 style="padding-bottom: 5%">Create your account <?php echo $errorstring; ?> </h1>
                         
                         <div class="form-group">

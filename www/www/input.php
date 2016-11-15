@@ -13,7 +13,7 @@ require "front_header.html";
     // Create connection
     $db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
     
-    if (isset($_GET["id"])) { //the first time they get sent here is from the link they get
+    if (isset($_GET["id"])) {
         
         $token = $_GET["id"];
         
@@ -30,7 +30,7 @@ require "front_header.html";
             header("Location: /404");
             exit();
         }
-    } elseif (isset($_POST['username'])) { //the second time is the actual login
+    } elseif (isset($_POST['username'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $username = $_POST['username'];
@@ -39,7 +39,7 @@ require "front_header.html";
         
         if(check_for_user($username)){
             session_start();
-            header("Location: google.com");
+            header("Location: /userexists");
             exit();
         }
         
@@ -51,14 +51,14 @@ require "front_header.html";
             $errorstring = $db->error;    
         }else{
             session_start();
-            header("Location: dash?user=" . $username);
+            header("Location: /dash?user=" . $username);
             exit();
         }
         
     }
     else {
         session_start();
-        header("Location: 404");
+        header("Location: /404");
         exit();
     }
     
@@ -67,12 +67,12 @@ require "front_header.html";
         $result = $db->query($query);
         if($result != null){
             //user already exists
-            //while($row = $result->fetch_assoc()){
+            while($row = $result->fetch_assoc()){
                 return true;
                 
             }
             return false;
-        
+        }
     }
 
 
@@ -83,7 +83,7 @@ require "front_header.html";
         <div class="row">
             <div class="col-lg-12">
                 <div class="intro-message" style="padding-top: 10%">
-                        <form class="form-horizontal text-center" role="form" action="" method="POST">
+                        <form class="form-horizontal text-center" role="form" action="signup" method="POST">
                             <h1 style="padding-bottom: 5%">Create your account <?php echo $errorstring; ?> </h1>
                         
                         <div class="form-group">

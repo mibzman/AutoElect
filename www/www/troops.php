@@ -12,69 +12,6 @@ require "front_header.html";
 
     // Create connection
     $db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
-    
-    if (isset($_GET["id"])) { //the first time they get sent here is from the link they get
-        
-        $token = $_GET["id"];
-        
-        $query = "SELECT * FROM TEMPUSERS WHERE ID = '" . $token . "'";
-        $result = $db->query($query);
-        if($result != null){
-            while($row = $result->fetch_assoc()){
-                $name = $row['NAME'];
-                $email = $row['EMAIL'];
-                $_POST['type'] = $row['TYPE'];
-            }
-        }else{
-           session_start();
-            header("Location: /404");
-            exit();
-        }
-    } elseif (isset($_POST['username'])) { //the second time is the actual login
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $type = $_POST['type'];
-        
-        if(check_for_user($username)){
-            session_start();
-            header("Location: google.com");
-            exit();
-        }
-        
-       $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES 
-        ('" . $email . "','". $name. "','". $type . "','". $username . "','". $hash . "')";
-        
-        $result = $db->query($query);
-        if($db->error){
-            $errorstring = $db->error;    
-        }else{
-            session_start();
-            header("Location: dash?user=" . $username);
-            exit();
-        }
-        
-    }
-    else {
-        session_start();
-        header("Location: 404");
-        exit();
-    }
-    
-    function check_for_user($username){
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
-        $result = $db->query($query);
-        if($result != null){
-            //user already exists
-            //while($row = $result->fetch_assoc()){
-                return true;
-                
-            }
-            return false;
-        
-    }
-
 
 ?>
 
@@ -83,13 +20,18 @@ require "front_header.html";
         <div class="row">
             <div class="col-lg-12">
                 <div class="intro-message" style="padding-top: 10%">
-                        <form class="form-horizontal text-center" role="form" action="" method="POST">
-                            <h1 style="padding-bottom: 5%">Create your account <?php echo $errorstring; ?> </h1>
+                        <form class="form-horizontal text-center" role="form" action="troops" method="POST">
+                            <h1 style="padding-bottom: 5%">Create your account </h1>
                         
                         <div class="form-group">
                             <label for="email" class='col-sm-5 control-label'>Email Address:</label>
                             <div class='col-sm-1 text-center'>
                                 <input type="text" name="email" value="<?php echo $email ?>"/>
+                            </div>
+                            
+                            <label for="email" class='col-sm-5 control-label'>waa:</label>
+                            <div class='col-sm-1 text-center'>
+                                <input type="text" name="email2" value="<?php echo $email ?>"/>
                             </div>
                         </div>
                         
