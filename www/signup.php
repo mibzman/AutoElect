@@ -1,3 +1,4 @@
+//im 99.999% positive that this is a duplicate of invite.php, considering it's still got the cloud9 db stuff in it
 <?php
 require "front_header.html";
     $servername = getenv('IP');

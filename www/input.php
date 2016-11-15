@@ -1,3 +1,4 @@
+//this is the form that the newly invited admin uses to make their account
 <?php
 require "front_header.html";
     $servername = getenv('IP');

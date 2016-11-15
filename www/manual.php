@@ -1,3 +1,5 @@
+//this does nothing right now.  can be used for dev stuff and whatever
+
 <?php
 require "header.php";
 
