@@ -1,35 +1,38 @@
 
 <?php
-    //THE FORM THAT GETS SENT TO SCOUTMASTERS
-    //TODO: make this do something instead of the nothing that it currently does
 
-    
-    //require "header2.php";
-    $servername = getenv('IP');
-    $username = "autoelect";
-    $password = "elengomat";
-    $database = "AUTOELECT";
-    $dbport = 3306;
-    
-    $db = new mysqli($servername, $username, $password, $database, $dbport);
-    
-    if(isset($_GET['troop'])){
-        if ($db->connect_error) {
-            session_start();
-            header("Location: /formError");
-            exit();
-        }
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
-            $result = $db->query($query);
-            if($result != null){
-                //do different stuff depending on permission
-            }
-    }else{
+// THE FORM THAT GETS SENT TO SCOUTMASTERS
+// TODO: make this do something instead of the nothing that it currently does
+// require "header2.php";
+
+$servername = getenv('IP');
+$username = "autoelect";
+$password = "elengomat";
+$database = "AUTOELECT";
+$dbport = 3306;
+$db = new mysqli($servername, $username, $password, $database, $dbport);
+
+if (isset($_GET['troop'])) {
+    if ($db->connect_error) {
         session_start();
-            header("Location: /formError");
-            exit();
-    } 
-    
+        header("Location: /formError");
+        exit();
+    }
+
+    $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+
+        // do different stuff depending on permission
+
+    }
+}
+else {
+    session_start();
+    header("Location: /formError");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

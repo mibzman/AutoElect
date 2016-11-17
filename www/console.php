@@ -1,123 +1,143 @@
-
 <?php
 require "header.php";
-    //THIS IS THE CONSOLE THAT IS PRESENTED AT THE BEGENING OF THE YEAR
-    //at the preset time AutoElect will send a link to the approperate administrator to this page
-    
-    $servername = getenv('IP'); //hits localhost
-    $username = "autoelect";
-    $password = "elengomat";
-    $database = "AUTOELECT"; //all database titles should be all caps
-    $dbport = 3306;
-    $isDocUploaded = true; //initialise flag that says whether jpg was uploaded
-    $errorsOccurred = false;
-    
-    $db = new mysqli($servername, $username, $password, $database, $dbport);
-    
-    //TODO: replace with sessions
-    if(isset($_GET['user'])){ //checks if username is included as a GET request, should be a token that the admin got sent
-        if ($db->connect_error) {
-            session_start();
-            header("Location: /login");
-            exit();
-        }
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
-            $result = $db->query($query);
-            if($result != null){
-                //do different stuff depending on permission
-            }
-    } elseif(is_array($_FILES['txtUploadFile']['error'])){ //after the file is uploaded the page reloads
-								//note: that means that someone could access this page by directly uploading a file without logging in.
-         
-        foreach($_FILES['txtUploadFile']['error'] as $key => $value) {
-            if($_FILES['txtUploadFile']['name'][$key] != '') {
-                echo '<p><hr />Uploading File: '.$_FILES['txtUploadFile']['name'][$key].'</p>';
-                if($value > 0) {
-                    $isDocUploaded = false; //attachment was not submitted or an upload error occurred
-                    $errorsOccurred = true;
-                    switch($value) {    //check which error code was returned
-                        case 1:
-                            echo '<p style="color: rgb(178,34,34)">** Error: Attachment file is larger than allowed by the server.</p>';
-                            break;
-                        case 2:
-                            echo '<p style="color: rgb(178,34,34)">** Error: Attachment file is larger than the maximum allowed - 100kb.</p>';
-                            break;
-                        case 3:
-                            echo '<p style="color: rgb(178,34,34)">** Error: Attachment file was only partially uploaded.</p>';
-                            break;
-                        //case 4: echo 'No attachment file was uploaded. '; break;
-                    }
+
+// THIS IS THE CONSOLE THAT IS PRESENTED AT THE BEGENING OF THE YEAR
+// at the preset time AutoElect will send a link to the approperate administrator to this page
+
+$servername = getenv('IP'); //hits localhost
+$username = "autoelect";
+$password = "elengomat";
+$database = "AUTOELECT"; //all database titles should be all caps
+$dbport = 3306;
+$isDocUploaded = true; //initialise flag that says whether jpg was uploaded
+$errorsOccurred = false;
+$db = new mysqli($servername, $username, $password, $database, $dbport);
+
+// TODO: replace with sessions
+
+if (isset($_GET['user'])) { //checks if username is included as a GET request, should be a token that the admin got sent
+    if ($db->connect_error) {
+        session_start();
+        header("Location: /login");
+        exit();
+    }
+
+    $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+
+        // do different stuff depending on permission
+
+    }
+}
+elseif (is_array($_FILES['txtUploadFile']['error'])) { //after the file is uploaded the page reloads
+
+    // note: that means that someone could access this page by directly uploading a file without logging in.
+
+    foreach($_FILES['txtUploadFile']['error'] as $key => $value) {
+        if ($_FILES['txtUploadFile']['name'][$key] != '') {
+            echo '<p><hr />Uploading File: ' . $_FILES['txtUploadFile']['name'][$key] . '</p>';
+            if ($value > 0) {
+                $isDocUploaded = false; //attachment was not submitted or an upload error occurred
+                $errorsOccurred = true;
+                switch ($value) { //check which error code was returned
+                case 1:
+                    echo '<p style="color: rgb(178,34,34)">** Error: Attachment file is larger than allowed by the server.</p>';
+                    break;
+
+                case 2:
+                    echo '<p style="color: rgb(178,34,34)">** Error: Attachment file is larger than the maximum allowed - 100kb.</p>';
+                    break;
+
+                case 3:
+                    echo '<p style="color: rgb(178,34,34)">** Error: Attachment file was only partially uploaded.</p>';
+                    break;
+
+                    // case 4: echo 'No attachment file was uploaded. '; break;
+
                 }
-         
-                //if an attachment document was uploaded, move the file to desired folder
-                if($isDocUploaded && $_FILES['txtUploadFile']['name'][$key] != '') {
-                
-                    $uploadedFile = 'files/troops.csv'; //$_FILES['txtUploadFile']['name'][$key];
-                    if(@is_uploaded_file($_FILES['txtUploadFile']['tmp_name'][$key])) //initial temp location of uploaded file
-                    {
-                        if(@!move_uploaded_file($_FILES['txtUploadFile']['tmp_name'][$key], $uploadedFile)) { //move the file to images folder
-                            echo '<p style="color: rgb(178,34,34)"><br />**Error**: could not move '. $_FILES['txtUploadFile']['tmp_name'][$key]. 'to' . $uploadedFile . '<br /></p>';
-                            $errorsOccurred = true;
-                        } else {    //file was uploaded successfully
-                            echo '<p style="color: rgb(0,128,0)"> File: '.$_FILES['txtUploadFile']['name'][$key].' was uploaded successfully</p>';
-                        }
-                    } else {
-                        echo '<p style="color: rgb(178,34,34)">Error: '.$_FILES['txtUploadFile']['name'][$key].' was not uploaded correctly to temp area.</p>';
+            }
+
+            // if an attachment document was uploaded, move the file to desired folder
+
+            if ($isDocUploaded && $_FILES['txtUploadFile']['name'][$key] != '') {
+                $uploadedFile = 'files/troops.csv'; //$_FILES['txtUploadFile']['name'][$key];
+                if (@is_uploaded_file($_FILES['txtUploadFile']['tmp_name'][$key])) //initial temp location of uploaded file
+                {
+                    if (@!move_uploaded_file($_FILES['txtUploadFile']['tmp_name'][$key], $uploadedFile)) { //move the file to images folder
+                        echo '<p style="color: rgb(178,34,34)"><br />**Error**: could not move ' . $_FILES['txtUploadFile']['tmp_name'][$key] . 'to' . $uploadedFile . '<br /></p>';
                         $errorsOccurred = true;
                     }
+                    else { //file was uploaded successfully
+                        echo '<p style="color: rgb(0,128,0)"> File: ' . $_FILES['txtUploadFile']['name'][$key] . ' was uploaded successfully</p>';
+                    }
                 }
-                $isDocUploaded = true;  //reset to true for the next document
+                else {
+                    echo '<p style="color: rgb(178,34,34)">Error: ' . $_FILES['txtUploadFile']['name'][$key] . ' was not uploaded correctly to temp area.</p>';
+                    $errorsOccurred = true;
+                }
             }
-        }   //end of Main foreach
-     
-	//I have no idea what this is or when it runs.  I've legitamly never seen it before -Sam
-        $message = "\r\nMVC Uploader - New files were uploaded - with UNKNOWN errors";
-        if($errorsOccurred) {
-            echo '<p><input type="button" value="Go back" onclick="window.history.back();" />'.
-                '<a href="displayImages.php">Display Uploaded Files</a></p>';
-            $message = "\r\nMVC Uploader - New files were uploaded - with errors";
-        } else {    //at this point, the file was uploaded successfully
-            //echo '<script type="text/javascript">window.location.href="displayImages.php"</script>';
+
+            $isDocUploaded = true; //reset to true for the next document
         }
-         
-        echo '</div>';
-        
-	//This inserts the data from the csv file we just uploaded into the database.  it is buggy and I don't know why.
-	//http://stackoverflow.com/questions/39070087/mysql-load-data-infile-field-mismatch
-        $query = "LOAD DATA LOCAL INFILE '/var/www/$uploadedFile' INTO TABLE TROOPS FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (NUMBER,ADDRESS,COMMENT,SCOUTMASTER_NAME,SCOUTMASTER_EMAIL,COMMITTEE_NAME,COMMITTEE_EMAIL,DISTRICT) "; 
-	//This 'not allowed' error is probably caused by an issue with the default 'load data local' command being denied.  
-	//maybe use mysqli::real_connect
-        $result = $db->query($query);
-            if($result == null){
-                $testString = mysqli_error($db);
-                //session_start();
-                //header("Location: https://autoelect-mibzman.c9users.io/fail");
-                //exit();
-                //echo $testString . "\n";
-            }
-        $query = "SHOW ERRORS";
-        $result = $db->query($query);
-        $row = $result->fetch_row();
-        echo $row[0] . $row[1] . $row[2];
-	//echo $uploadedFile;
-	
-        
-        
-        //get all ordeal stuff
-        $myInputs = $_POST["myInputs"];
-        foreach ($myInputs as $eachInput) {
-             echo $eachInput . "<br>";
-        }
-        
-     }
-    
-    //if there not logged in
-    else{
-        session_start();
-            header("Location: /login");
-            exit();
-    } 
-   
+    } //end of Main foreach
+
+    // I have no idea what this is or when it runs.  I've legitamly never seen it before -Sam
+
+    $message = "\r\nMVC Uploader - New files were uploaded - with UNKNOWN errors";
+    if ($errorsOccurred) {
+        echo '<p><input type="button" value="Go back" onclick="window.history.back();" />' . '<a href="displayImages.php">Display Uploaded Files</a></p>';
+        $message = "\r\nMVC Uploader - New files were uploaded - with errors";
+    }
+    else { //at this point, the file was uploaded successfully
+
+        // echo '<script type="text/javascript">window.location.href="displayImages.php"</script>';
+
+    }
+
+    echo '</div>';
+
+    // This inserts the data from the csv file we just uploaded into the database.  it is buggy and I don't know why.
+    // http://stackoverflow.com/questions/39070087/mysql-load-data-infile-field-mismatch
+
+    $query = "LOAD DATA LOCAL INFILE '/var/www/$uploadedFile' INTO TABLE TROOPS FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (NUMBER,ADDRESS,COMMENT,SCOUTMASTER_NAME,SCOUTMASTER_EMAIL,COMMITTEE_NAME,COMMITTEE_EMAIL,DISTRICT) ";
+
+    // This 'not allowed' error is probably caused by an issue with the default 'load data local' command being denied.
+    // maybe use mysqli::real_connect
+
+    $result = $db->query($query);
+    if ($result == null) {
+        $testString = mysqli_error($db);
+
+        // session_start();
+        // header("Location: https://autoelect-mibzman.c9users.io/fail");
+        // exit();
+        // echo $testString . "\n";
+
+    }
+
+    $query = "SHOW ERRORS";
+    $result = $db->query($query);
+    $row = $result->fetch_row();
+    echo $row[0] . $row[1] . $row[2];
+
+    // echo $uploadedFile;
+    // get all ordeal stuff
+
+    $myInputs = $_POST["myInputs"];
+    foreach($myInputs as $eachInput) {
+        echo $eachInput . "<br />";
+    }
+}
+
+// if there not logged in
+
+else {
+    session_start();
+    header("Location: /login");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

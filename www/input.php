@@ -1,83 +1,85 @@
 //this is the form that the newly invited admin uses to make their account
 <?php
 require "front_header.html";
-    $servername = getenv('IP');
-    $sqlusername = "autoelect";
-    $sqlpassword = "elengomat";
-    $database = "AUTOELECT";
-    $dbport = 3306;
-    $name;
-    $email = "";
-    
-    $errorstring;
 
-    // Create connection
-    $db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
-    
-    if (isset($_GET["id"])) {
-        
-        $token = $_GET["id"];
-        
-        $query = "SELECT * FROM TEMPUSERS WHERE ID = '" . $token . "'";
-        $result = $db->query($query);
-        if($result != null){
-            while($row = $result->fetch_assoc()){
-                $name = $row['NAME'];
-                $email = $row['EMAIL'];
-                $_POST['type'] = $row['TYPE'];
-            }
-        }else{
-           session_start();
-            header("Location: /404");
-            exit();
+$servername = getenv('IP');
+$sqlusername = "autoelect";
+$sqlpassword = "elengomat";
+$database = "AUTOELECT";
+$dbport = 3306;
+$name;
+$email = "";
+$errorstring;
+
+// Create connection
+
+$db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
+
+if (isset($_GET["id"])) {
+    $token = $_GET["id"];
+    $query = "SELECT * FROM TEMPUSERS WHERE ID = '" . $token . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+        while ($row = $result->fetch_assoc()) {
+            $name = $row['NAME'];
+            $email = $row['EMAIL'];
+            $_POST['type'] = $row['TYPE'];
         }
-    } elseif (isset($_POST['username'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $type = $_POST['type'];
-        
-        if(check_for_user($username)){
-            session_start();
-            header("Location: /userexists");
-            exit();
-        }
-        
-       $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES 
-        ('" . $email . "','". $name. "','". $type . "','". $username . "','". $hash . "')";
-        
-        $result = $db->query($query);
-        if($db->error){
-            $errorstring = $db->error;    
-        }else{
-            session_start();
-            header("Location: /dash?user=" . $username);
-            exit();
-        }
-        
     }
     else {
         session_start();
         header("Location: /404");
         exit();
     }
-    
-    function check_for_user($username){
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
-        $result = $db->query($query);
-        if($result != null){
-            //user already exists
-            while($row = $result->fetch_assoc()){
-                return true;
-                
-            }
-            return false;
-        }
+}
+elseif (isset($_POST['username'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $type = $_POST['type'];
+    if (check_for_user($username)) {
+        session_start();
+        header("Location: /userexists");
+        exit();
     }
 
+    $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES 
+        ('" . $email . "','" . $name . "','" . $type . "','" . $username . "','" . $hash . "')";
+    $result = $db->query($query);
+    if ($db->error) {
+        $errorstring = $db->error;
+    }
+    else {
+        session_start();
+        header("Location: /dash?user=" . $username);
+        exit();
+    }
+}
+else {
+    session_start();
+    header("Location: /404");
+    exit();
+}
+
+function check_for_user($username)
+{
+    $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+
+        // user already exists
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+
+        return false;
+    }
+}
 
 ?>
+
 
 <div class="intro">
     <div class="container">

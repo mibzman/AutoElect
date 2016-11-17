@@ -2,60 +2,66 @@
 <?php
 require "header.php";
 
-include_once("phpmailer/class.phpmailer.php");
-include_once("phpmailer/class.smtp.php");
+include_once ("phpmailer/class.phpmailer.php");
+
+include_once ("phpmailer/class.smtp.php");
+
 $mail = new PHPMailer();
 $mail->IsSMTP();
-// enable SMTP authentication
-$mail->SMTPAuth = true;
-// sets the prefix to the server
-$mail->SMTPSecure = "ssl";
-// sets GMAIL as the SMTP server
-$mail->Host = 'smtp.gmail.com';
-// set the SMTP port
-$mail->Port = '465';
-// GMAIL username
-$mail->Username = 'autoelect17@gmail.com';
-// GMAIL password
-$mail->Password = 'Elengomat';
 
+// enable SMTP authentication
+
+$mail->SMTPAuth = true;
+
+// sets the prefix to the server
+
+$mail->SMTPSecure = "ssl";
+
+// sets GMAIL as the SMTP server
+
+$mail->Host = 'smtp.gmail.com';
+
+// set the SMTP port
+
+$mail->Port = '465';
+
+// GMAIL username
+
+$mail->Username = 'autoelect17@gmail.com';
+
+// GMAIL password
+
+$mail->Password = 'Elengomat';
 $mail->From = 'autoelect17@gmail.com';
 $mail->FromName = 'Admin';
 $mail->AddReplyTo('autoelect17@gmail.com', 'Admin');
 $mail->Subject = 'Welcome to AutoElect';
-
 $servername = getenv('IP');
 $username = "autoelect";
 $password = "elengomat";
 $database = "AUTOELECT";
 $dbport = 3306;
-    
-    $db = new mysqli($servername, $username, $password, $database, $dbport);
-    
-    if(isset($_POST['submit'])){
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $type = $_POST['selector'];
-        $token = sha1(uniqid($name));
-        
-        $query = "INSERT INTO TEMPUSERS (EMAIL, NAME, ID, TYPE) VALUES ('" . $email . "','". $name. "','" . $token . "','". $type . "')";
-        
-        $result = $db->query($query);
-        
-        echo $db->error;
-        
-        $mail->AddAddress($email , $name);
-        $mail->Body = $_POST['message'] . 'http://autoelect.ddns.net/signup?id=' . $token;
-        $mail->IsHTML(false);
+$db = new mysqli($servername, $username, $password, $database, $dbport);
 
-        if(!$mail->Send()){
-            echo $mail->ErrorInfo;
-        }else{ 
-            $mail->ClearAddresses();
-            $mail->ClearAttachments();
-        }
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $type = $_POST['selector'];
+    $token = sha1(uniqid($name));
+    $query = "INSERT INTO TEMPUSERS (EMAIL, NAME, ID, TYPE) VALUES ('" . $email . "','" . $name . "','" . $token . "','" . $type . "')";
+    $result = $db->query($query);
+    echo $db->error;
+    $mail->AddAddress($email, $name);
+    $mail->Body = $_POST['message'] . 'http://autoelect.ddns.net/signup?id=' . $token;
+    $mail->IsHTML(false);
+    if (!$mail->Send()) {
+        echo $mail->ErrorInfo;
     }
-
+    else {
+        $mail->ClearAddresses();
+        $mail->ClearAttachments();
+    }
+}
 
 ?>
 

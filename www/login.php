@@ -1,45 +1,49 @@
 <?php
 require "front_header.html";
-    $servername = getenv('IP');
-    $username = "autoelect";
-    $password = "elengomat";
-    $database = "AUTOELECT";
-    $dbport = 3306;
-   //blarg 
 
-    // Create connection
-    $db = new mysqli($servername, $username, $password, $database, $dbport);
-    
-    if($input = $_POST['username']){
-        if ($db->connect_error) {
-            session_start();
-                header("Location: /login");
-                exit();
-        }else{
-            $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
-            $result = $db->query($query);
-            if($result != null){
-                while($row = $result->fetch_assoc()){
-                     //$hash = password_hash(, PASSWORD_DEFAULT);
-                    if(password_verify($_POST['password'], $row['HASH'])){
-                        session_start();
-                        header("Location: /dash?user=" . $input);
-                        exit();
-                    }else{
-                        session_start();
-                        header("Location: /login"); //TODO: add some sort of 'wrong password thing
-                        exit();
-                    }
+$servername = getenv('IP');
+$username = "autoelect";
+$password = "elengomat";
+$database = "AUTOELECT";
+$dbport = 3306;
+
+// Create connection
+
+$db = new mysqli($servername, $username, $password, $database, $dbport);
+
+if ($input = $_POST['username']) {
+    if ($db->connect_error) {
+        session_start();
+        header("Location: /login");
+        exit();
+    }
+    else {
+        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
+        $result = $db->query($query);
+        if ($result != null) {
+            while ($row = $result->fetch_assoc()) {
+
+                // $hash = password_hash(, PASSWORD_DEFAULT);
+
+                if (password_verify($_POST['password'], $row['HASH'])) {
+                    session_start();
+                    header("Location: /dash?user=" . $input);
+                    exit();
                 }
-                
-            }else{
-               session_start();
-                header("Location: /login");
-                exit();
+                else {
+                    session_start();
+                    header("Location: /login"); //TODO: add some sort of 'wrong password thing
+                    exit();
+                }
             }
         }
+        else {
+            session_start();
+            header("Location: /login");
+            exit();
+        }
     }
-
+}
 
 ?>
 

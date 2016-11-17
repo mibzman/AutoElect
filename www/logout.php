@@ -1,17 +1,19 @@
 <?php
 session_start();
 $message = "";
-if(!isset($_SESSION['user_id']))
-    $message = "You have not logged in";
+
+if (!isset($_SESSION['user_id'])) $message = "You have not logged in";
 else {
-    // Logout 
+
+    // Logout
+
     session_destroy();
     session_id("");
-    
     $message = "You have logged out successfully!";
 }
 
 require "front_header.html";
+
 ?>
 
 <meta title="Crowd Diet: Log Out"></meta>

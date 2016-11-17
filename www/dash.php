@@ -1,31 +1,37 @@
 <?php
 require "header.php";
-    $servername = getenv('IP');
-    $username = "autoelect";
-    $password = "elengomat";
-    $database = "AUTOELECT";
-    $dbport = 3306;
-    
-    $db = new mysqli($servername, $username, $password, $database, $dbport);
-    if(isset($_GET['user'])){
-        if ($db->connect_error) {
-            session_start();
-            header("Location: /login"); //TODO add login error message
-            exit();
-        }
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
-            $result = $db->query($query);
-            if($result != null){
-                //do different stuff depending on permission
-            }
-    }else{
-        //session_start();
-            //exit();
-    }
-    
 
+$servername = getenv('IP');
+$username = "autoelect";
+$password = "elengomat";
+$database = "AUTOELECT";
+$dbport = 3306;
+$db = new mysqli($servername, $username, $password, $database, $dbport);
+
+if (isset($_GET['user'])) {
+    if ($db->connect_error) {
+        session_start();
+        header("Location: /login"); //TODO add login error message
+        exit();
+    }
+
+    $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+
+        // do different stuff depending on permission
+
+    }
+}
+else {
+
+    // session_start();
+    // exit();
+
+}
 
 ?>
+
 
 <div class="intro">
     <div class="container">

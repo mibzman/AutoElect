@@ -1,75 +1,47 @@
-//im 99.999% positive that this is a duplicate of invite.php, considering it's still got the cloud9 db stuff in it
+
 <?php
+//im 99.999% positive that this is a duplicate of invite.php, considering it's still got the cloud9 db stuff in it
 require "front_header.html";
-    $servername = getenv('IP');
-    $sqlusername = "autoelect";
-    $sqlpassword = "elengomat";
-    $database = "AUTOELECT";
-    $dbport = 3306;
-    $name;
-    $email = "";
-    
-    $errorstring;
 
-    // Create connection
-    $db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
-    
-    if (isset($_GET["id"])) { //the first time they get sent here is from the link they get
-        
-        $token = $_GET["id"];
-        
-        $query = "SELECT * FROM TEMPUSERS WHERE ID = '" . $token . "'";
-        $result = $db->query($query);
-        if($result != null){
-            while($row = $result->fetch_assoc()){
-                $name = $row['NAME'];
-                $email = $row['EMAIL'];
-		//I'd like to forward this data without making it editable to the new user
-		//$type  = $row['TYPE'];
-                //$_POST['type'] = $type;
-            }
-        }else{
-           session_start();
-            header("Location: /404");
-            exit();
+$servername = getenv('IP');
+$sqlusername = "autoelect";
+$sqlpassword = "elengomat";
+$database = "AUTOELECT";
+$dbport = 3306;
+$name;
+$email = "";
+$errorstring;
+
+// Create connection
+
+$db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
+
+if (isset($_GET["id"])) { //the first time they get sent here is from the link they get
+    $token = $_GET["id"];
+    $query = "SELECT * FROM TEMPUSERS WHERE ID = '" . $token . "'";
+    $result = $db->query($query);
+    if ($result != null) {
+        while ($row = $result->fetch_assoc()) {
+            $name = $row['NAME'];
+            $email = $row['EMAIL'];
+
+            // I'd like to forward this data without making it editable to the new user
+            // $type  = $row['TYPE'];
+            // $_POST['type'] = $type;
+
         }
-    }elseif (isset($_POST['username'])) { //the second time is the actual login
-        //echo "stuff is happening";
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $type = 1;
-        
-	$query = "SELECT * FROM TEMPUSERS WHERE EMAIL = '" . $email . "'";
-        $result = $db->query($query);
-        if($result != null){
-            while($row = $result->fetch_assoc()){
-                 $type  = $row['TYPE'];
-            }
-        }else{
-           session_start();
-            header("Location: /404");
-            exit();
-        }
-
-
-       $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES
-        ('" . $email . "','". $name. "','". $type . "','". $username . "','". $hash . "')";
-        $result = $db->query($query);
-        if($db->error){
-        $errorstring = $db->error;
-        }else{
-            session_start();
-            header("Location: dash?user=" . $username);
-            exit();
-        }
-
-    }else {
+    }
+    else {
         session_start();
-        header("Location: 404");
+        header("Location: /404");
         exit();
-    }   
+    }
+}
+else {
+    session_start();
+    header("Location: 404");
+    exit();
+}
 
 ?>
 
