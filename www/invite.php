@@ -1,4 +1,4 @@
-//this is used to invite a new admin
+<!--this is used to invite a new admin -->
 <?php
 require "header.php";
 

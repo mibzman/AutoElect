@@ -24,58 +24,52 @@ require "front_header.html";
             while($row = $result->fetch_assoc()){
                 $name = $row['NAME'];
                 $email = $row['EMAIL'];
-                $_POST['type'] = $row['TYPE'];
+		//I'd like to forward this data without making it editable to the new user
+		//$type  = $row['TYPE'];
+                //$_POST['type'] = $type;
             }
         }else{
            session_start();
             header("Location: /404");
             exit();
         }
-    } elseif (isset($_POST['username'])) { //the second time is the actual login
+    }elseif (isset($_POST['username'])) { //the second time is the actual login
+        //echo "stuff is happening";
         $name = $_POST['name'];
         $email = $_POST['email'];
         $username = $_POST['username'];
         $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $type = $_POST['type'];
+        $type = 1;
         
-        if(check_for_user($username)){
-            session_start();
-            header("Location: google.com");
+	$query = "SELECT * FROM TEMPUSERS WHERE EMAIL = '" . $email . "'";
+        $result = $db->query($query);
+        if($result != null){
+            while($row = $result->fetch_assoc()){
+                 $type  = $row['TYPE'];
+            }
+        }else{
+           session_start();
+            header("Location: /404");
             exit();
         }
-        
-       $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES 
+
+
+       $query = "INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES
         ('" . $email . "','". $name. "','". $type . "','". $username . "','". $hash . "')";
-        
         $result = $db->query($query);
         if($db->error){
-            $errorstring = $db->error;    
+        $errorstring = $db->error;
         }else{
             session_start();
             header("Location: dash?user=" . $username);
             exit();
         }
-        
-    }
-    else {
+
+    }else {
         session_start();
         header("Location: 404");
         exit();
-    }
-    
-    function check_for_user($username){
-        $query = "SELECT * FROM USERS WHERE USERNAME = '" . $input . "'";
-        $result = $db->query($query);
-        if($result != null){
-            //user already exists
-            //while($row = $result->fetch_assoc()){
-                return true;
-                
-            }
-            return false;
-        
-    }
-
+    }   
 
 ?>
 
@@ -84,7 +78,7 @@ require "front_header.html";
         <div class="row">
             <div class="col-lg-12">
                 <div class="intro-message" style="padding-top: 10%">
-                        <form class="form-horizontal text-center" role="form" action="" method="POST">
+                        <form class="form-horizontal text-center" role="" action="welcome" method="POST">
                             <h1 style="padding-bottom: 5%">Create your account <?php echo $errorstring; ?> </h1>
                         
                         <div class="form-group">
