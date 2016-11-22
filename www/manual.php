@@ -1,24 +1,9 @@
 //this does nothing right now.  can be used for dev stuff and whatever
 
 <?php
+
 require "header.php";
-
-include_once("phpmailer/class.phpmailer.php");
-include_once("phpmailer/class.smtp.php");
-$mail = new PHPMailer();
-$mail->IsSMTP();
-$mail->SMTPAuth = true;
-$mail->SMTPSecure = "ssl";
-$mail->Host = 'smtp.gmail.com';
-$mail->Port = '465';
-$mail->Username = 'autoelect17@gmail.com';
-$mail->Password = 'Elengomat';
-
-$mail->From = 'autoelect17@gmail.com';
-$mail->FromName = 'Admin';
-$mail->AddReplyTo('autoelect17@gmail.com', 'Admin');
-$mail->Subject = 'Welcome to AutoElect';
-
+include 'emailer.php';
 $config = include('config.php');
 
 $servername = $config['server_name']; //hits localhost
@@ -30,31 +15,7 @@ $dbport = $config['db_port'];
     
 $db = new mysqli($servername, $username, $password, $database, $dbport);
     
-    if(isset($_POST['submit'])){
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $type = $_POST['selector'];
-        $token = sha1(uniqid($name));
-        
-        $query = "INSERT INTO TEMPUSERS (EMAIL, NAME, ID, TYPE) VALUES ('" . $email . "','". $name. "','" . $token . "','". $type . "')";
-        
-        $result = $db->query($query);
-        
-        echo $db->error;
-        
-        $mail->AddAddress($email , $name);
-        $mail->Body = $_POST['message'] . 'https://autoelect-mibzman.c9users.io/signup?id=' . $token;
-        $mail->IsHTML(false);
-
-        if(!$mail->Send()){
-            //echo $mail->ErrorInfo;
-        }else{ 
-            $mail->ClearAddresses();
-            $mail->ClearAttachments();
-        }
-    }
-
-
+   
 ?>
 
 <div class="intro">

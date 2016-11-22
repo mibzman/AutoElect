@@ -1,27 +1,9 @@
 <!--this is used to invite a new admin -->
 <?php
+
 require "header.php";
-
-include_once ("phpmailer/class.phpmailer.php");
-
-include_once ("phpmailer/class.smtp.php");
-
-//I'm leaving this stuff out of config because eventuially it will be a seperate file
-$mail = new PHPMailer();
-$mail->IsSMTP(); // enable SMTP authentication
-$mail->SMTPAuth = true; // sets the prefix to the server
-$mail->SMTPSecure = "ssl"; // sets GMAIL as the SMTP server
-$mail->Host = 'smtp.gmail.com'; // set the SMTP port
-$mail->Port = '465';
-
 $config = include('config.php');
-
-$mail->Username = 'autoelect17@gmail.com'; // GMAIL username
-$mail->Password = 'Elengomat'; // GMAIL password
-$mail->From = 'autoelect17@gmail.com';
-$mail->FromName = 'Admin';
-$mail->AddReplyTo('autoelect17@gmail.com', 'Admin');
-$mail->Subject = 'Welcome to AutoElect';
+include 'emailer.php';
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];
@@ -33,23 +15,27 @@ $dbport = $config['db_port'];
 $db = new mysqli($servername, $username, $password, $database, $dbport);
 
 if (isset($_POST['submit'])) {
+
     $name = $_POST['name'];
     $email = $_POST['email'];
     $type = $_POST['selector'];
     $token = sha1(uniqid($name));
     $query = "INSERT INTO TEMPUSERS (EMAIL, NAME, ID, TYPE) VALUES ('" . $email . "','" . $name . "','" . $token . "','" . $type . "')";
     $result = $db->query($query);
-    echo $db->error;
-    $mail->AddAddress($email, $name);
-    $mail->Body = $_POST['message'] . $config['url'] .'/signup?id=' . $token;
-    $mail->IsHTML(false);
-    if (!$mail->Send()) {
-        echo $mail->ErrorInfo;
+    if ($db->error){
+        session_start();
+        header("Location: /dbError");
+        exit();
+
     }
-    else {
-        $mail->ClearAddresses();
-        $mail->ClearAttachments();
+    
+    $body = $_POST['message'] . $config['url'] .'/signup?id=' . $token;
+    if (email($name, $email, 'Welcome to AutoElect', $body)){
+        echo "Email was sent Successfully" 
+    }else{
+       
     }
+
 }
 
 ?>
@@ -66,7 +52,7 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <label for="email" class='col-sm-5 control-label'>Select Type:</label>
                             <div class='col-sm-2 text-center'>
-                                <select class="form-control" name="selector">
+                                <select class="form-control" name="selector"l>
                                     <option value="1">Admin</option>
                                     <option value="2">Scoutmaster</option>
                                     <option value="3">Elengomat</option>
