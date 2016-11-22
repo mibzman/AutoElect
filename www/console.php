@@ -4,11 +4,15 @@ require "header.php";
 // THIS IS THE CONSOLE THAT IS PRESENTED AT THE BEGENING OF THE YEAR
 // at the preset time AutoElect will send a link to the approperate administrator to this page
 
-$servername = getenv('IP'); //hits localhost
-$username = "autoelect";
-$password = "elengomat";
-$database = "AUTOELECT"; //all database titles should be all caps
-$dbport = 3306;
+$config = include('config.php');
+
+$servername = $config['server_name']; //hits localhost
+$username =  $config['db_user'];
+$password = $config['db_pass'];
+//NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
+$database =  $config['db_name']; //all database titles should be all caps
+$dbport = $config['db_port'];
+
 $isDocUploaded = true; //initialise flag that says whether jpg was uploaded
 $errorsOccurred = false;
 $db = new mysqli($servername, $username, $password, $database, $dbport);

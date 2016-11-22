@@ -2,11 +2,13 @@
 <?php
 require "front_header.html";
 
-$servername = getenv('IP');
-$sqlusername = "autoelect";
-$sqlpassword = "elengomat";
-$database = "AUTOELECT";
-$dbport = 3306;
+$config = include('config.php');
+
+$servername =  $config['server_name'];
+$sqlusername =  $config['db_user'];
+$sqlpassword = $config['db_pass'];
+$database = $config['db_name'];;
+$dbport = $config['db_port'];
 $name;
 $email = "";
 $errorstring;

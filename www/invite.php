@@ -6,41 +6,30 @@ include_once ("phpmailer/class.phpmailer.php");
 
 include_once ("phpmailer/class.smtp.php");
 
+//I'm leaving this stuff out of config because eventuially it will be a seperate file
 $mail = new PHPMailer();
-$mail->IsSMTP();
-
-// enable SMTP authentication
-
-$mail->SMTPAuth = true;
-
-// sets the prefix to the server
-
-$mail->SMTPSecure = "ssl";
-
-// sets GMAIL as the SMTP server
-
-$mail->Host = 'smtp.gmail.com';
-
-// set the SMTP port
-
+$mail->IsSMTP(); // enable SMTP authentication
+$mail->SMTPAuth = true; // sets the prefix to the server
+$mail->SMTPSecure = "ssl"; // sets GMAIL as the SMTP server
+$mail->Host = 'smtp.gmail.com'; // set the SMTP port
 $mail->Port = '465';
 
-// GMAIL username
+$config = include('config.php');
 
-$mail->Username = 'autoelect17@gmail.com';
-
-// GMAIL password
-
-$mail->Password = 'Elengomat';
+$mail->Username = 'autoelect17@gmail.com'; // GMAIL username
+$mail->Password = 'Elengomat'; // GMAIL password
 $mail->From = 'autoelect17@gmail.com';
 $mail->FromName = 'Admin';
 $mail->AddReplyTo('autoelect17@gmail.com', 'Admin');
 $mail->Subject = 'Welcome to AutoElect';
-$servername = getenv('IP');
-$username = "autoelect";
-$password = "elengomat";
-$database = "AUTOELECT";
-$dbport = 3306;
+
+$servername = $config['server_name']; //hits localhost
+$username =  $config['db_user'];
+$password = $config['db_pass'];
+//NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
+$database =  $config['db_name']; //all database titles should be all caps
+$dbport = $config['db_port'];
+
 $db = new mysqli($servername, $username, $password, $database, $dbport);
 
 if (isset($_POST['submit'])) {
@@ -52,7 +41,7 @@ if (isset($_POST['submit'])) {
     $result = $db->query($query);
     echo $db->error;
     $mail->AddAddress($email, $name);
-    $mail->Body = $_POST['message'] . 'http://autoelect.ddns.net/signup?id=' . $token;
+    $mail->Body = $_POST['message'] . $config['url'] .'/signup?id=' . $token;
     $mail->IsHTML(false);
     if (!$mail->Send()) {
         echo $mail->ErrorInfo;

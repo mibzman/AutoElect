@@ -4,13 +4,17 @@
 // THE FORM THAT GETS SENT TO SCOUTMASTERS
 // TODO: make this do something instead of the nothing that it currently does
 // require "header2.php";
+$config = include('config.php');
 
-$servername = getenv('IP');
-$username = "autoelect";
-$password = "elengomat";
-$database = "AUTOELECT";
-$dbport = 3306;
+$servername = $config['server_name']; //hits localhost
+$username =  $config['db_user'];
+$password = $config['db_pass'];
+//NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
+$database =  $config['db_name']; //all database titles should be all caps
+$dbport = $config['db_port'];
+
 $db = new mysqli($servername, $username, $password, $database, $dbport);
+
 
 if (isset($_GET['troop'])) {
     if ($db->connect_error) {

@@ -3,11 +3,16 @@
 //im 99.999% positive that this is a duplicate of invite.php, considering it's still got the cloud9 db stuff in it
 require "front_header.html";
 
-$servername = getenv('IP');
-$sqlusername = "autoelect";
-$sqlpassword = "elengomat";
-$database = "AUTOELECT";
-$dbport = 3306;
+$config = include('config.php');
+
+$servername = $config['server_name']; //hits localhost
+$username =  $config['db_user'];
+$password = $config['db_pass'];
+//NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
+$database =  $config['db_name']; //all database titles should be all caps
+$dbport = $config['db_port'];
+
+
 $name;
 $email = "";
 $errorstring;
