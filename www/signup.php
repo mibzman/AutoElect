@@ -1,6 +1,5 @@
 
 <?php
-//im 99.999% positive that this is a duplicate of invite.php, considering it's still got the cloud9 db stuff in it
 require "front_header.html";
 
 $config = include('config.php');
@@ -19,7 +18,7 @@ $errorstring;
 
 // Create connection
 
-$db = new mysqli($servername, $sqlusername, $sqlpassword, $database, $dbport);
+$db = new mysqli($servername, $username, $password, $database, $dbport);
 
 if (isset($_GET["id"])) { //the first time they get sent here is from the link they get
     $token = $_GET["id"];
@@ -44,7 +43,7 @@ if (isset($_GET["id"])) { //the first time they get sent here is from the link t
 }
 else {
     session_start();
-    header("Location: 404");
+    header("Location: /404");
     exit();
 }
 

@@ -42,9 +42,16 @@ if (isset($_POST['username'])) { //the second time is the actual login
         $errorstring = $db->error;
     }
     else {
-        session_start();
-        header("Location: dash?user=" . $username);
-        exit();
+        $delete = "DELETE FROM TEMPUSERS WHERE EMAIL='" . $email ."';";
+        $result = $db->query($delete);
+        if ($db->error) {
+            $errorstring = $db->error;
+        }
+        else{
+            session_start();
+            header("Location: dash?user=" . $username);
+            exit();
+        }
     }
 }
 

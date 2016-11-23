@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
     
     $body = $_POST['message'] . $config['url'] .'/signup?id=' . $token;
     if (email($name, $email, 'Welcome to AutoElect', $body)){
-        echo "Email was sent Successfully" 
+        echo "Email was sent Successfully"; 
     }else{
        
     }
