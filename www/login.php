@@ -1,15 +1,21 @@
 <?php
 require "front_header.html";
 
-$servername = getenv('IP');
-$username = "autoelect";
-$password = "elengomat";
-$database = "AUTOELECT";
-$dbport = 3306;
+$config = include('config.php');
+
+$servername = $config['server_name']; //hits localhost
+$username =  $config['db_user'];
+$password = $config['db_pass'];
+//NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
+$database =  $config['db_name']; //all database titles should be all caps
+$dbport = $config['db_port'];
 
 // Create connection
 
 $db = new mysqli($servername, $username, $password, $database, $dbport);
+
+session_unset();     // unset $_SESSION variable for this page
+session_destroy();
 
 if ($input = $_POST['username']) {
     if ($db->connect_error) {
@@ -26,9 +32,12 @@ if ($input = $_POST['username']) {
                 // $hash = password_hash(, PASSWORD_DEFAULT);
 
                 if (password_verify($_POST['password'], $row['HASH'])) {
+                    
                     session_start();
-                    header("Location: /dash?user=" . $input);
-                    exit();
+                    $_SESSION['user'] = $input;
+
+                    header("Location: /dash");
+                    //exit();
                 }
                 else {
                     session_start();

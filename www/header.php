@@ -49,16 +49,16 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/dash">Dashboard</a>
+                    <a id="dashRef" href="/dash">Dashboard</a>
                 </li>
                 <li>
-                    <a href="/manual">Manual Console</a>
+                    <a id="manualRef" href="/manual">Manual Console</a>
                 </li>
                 <li>
-                    <a href="/invite">Invite</a>
+                    <a id="inviteRef" href="/invite">Invite</a>
                 </li>
                 <li>
-                    <a href="/troops">Troops</a>
+                    <a id="troopsRef" href="/troops">Troops</a>
                 </li>
                 <li>
                     <a href="/elengomats">Elengomats</a>
@@ -75,6 +75,6 @@
                         <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
                              <span class="glyphicon glyphicon-menu-hamburger"></span>
                         </a>
-                        <a href="/logout.php" class="btn btn-default">
+                        <a href="/login.php" class="btn btn-default">
                             Logout
                         </a>

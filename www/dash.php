@@ -2,6 +2,7 @@
 require "header.php";
 
 $config = include('config.php');
+include('loginHandler.php');// This checks if the user has logged in and kicks them out if they haven't
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];
@@ -13,28 +14,19 @@ $dbport = $config['db_port'];
 $isDocUploaded = true; //initialise flag that says whether jpg was uploaded
 $errorsOccurred = false;
 $db = new mysqli($servername, $username, $password, $database, $dbport);
+session_start();
 
-if (isset($_GET['user'])) {
-    if ($db->connect_error) {
-        session_start();
-        header("Location: /login"); //TODO add login error message
-        exit();
-    }
-
-    $query = "SELECT * FROM USERS WHERE USERNAME = '" . $_GET['user'] . "'";
-    $result = $db->query($query);
-    if ($result != null) {
-
-        // do different stuff depending on permission
-
-    }
+/*
+if (isset($_SESSION['user'])) {
+   $_SESSION['timeout'] = time(); // Update session timeout
+   //horray! 
 }
 else {
-
+    header("Location: /login");
     // session_start();
     // exit();
-
 }
+*/
 
 ?>
 
