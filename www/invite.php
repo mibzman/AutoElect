@@ -2,9 +2,9 @@
 <?php
 
 require "header.php";
-$config = include('config.php');
-include 'emailer.php';
-include('loginHandler.php');
+$config = include('utils/config.php');
+include 'utils/emailer.php';
+include('utils/loginHandler.php');
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];

@@ -1,8 +1,8 @@
 <?php
 require "header.php";
 
-$config = include('config.php');
-include('loginHandler.php');// This checks if the user has logged in and kicks them out if they haven't
+$config = include('utils/config.php');
+include('utils/loginHandler.php');// This checks if the user has logged in and kicks them out if they haven't
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];

@@ -1,7 +1,7 @@
 <?php
 require "header.php";
 
-$config = include('config.php');
+$config = include('utils/config.php');
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];

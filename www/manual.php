@@ -3,9 +3,9 @@
 <?php
 
 require "header.php";
-include 'emailer.php';
-$config = include('config.php');
-include('loginHandler.php');
+include 'utils/emailer.php';
+$config = include('utils/config.php');
+include('utils/loginHandler.php');
 
 $servername = $config['server_name']; //hits localhost
 $username =  $config['db_user'];
