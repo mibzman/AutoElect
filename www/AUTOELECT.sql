@@ -87,3 +87,7 @@ BODY TEXT ,
 TOKEN VARCHAR(255) ,
 IS_REMINDER bool 
 );
+
+INSERT INTO USERS (EMAIL, NAME, PERMISSION, USERNAME, HASH) VALUES
+      ('sb205@zips.uakron.edu','admin',1,'admin','$2y$10$hiJwQlvct/vXozqCNu2kje8RBprsfRe7iIWP4KH0cd9AGUgsSArVq');
+
