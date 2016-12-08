@@ -12,51 +12,50 @@ $password = $config['db_pass'];
 //NOTE:  This will change once we implment multiple lodges, as each lodge will have its own db
 $database =  $config['db_name']; //all database titles should be all caps
 $dbport = $config['db_port'];
+$Name = "";
+$emailAddress = "";
+$address = "";
+$troopNumber = 0;
+$preferred = "";
 
 
-
-$db = new mysqli($servername, $username, $password, $database, $dbport);
-
-
+$db = mysql_connect("$servername:$dbport", "$username", "$password");
+$er = mysql_select_db("$database");
 
 
 if (isset($_POST['submitForm'])) {
-    if ($db->connect_error) {
+    if (!$db) {
         session_start();
         header("Location: /formError");
         exit();
     }
-
+    $result = null;
+    //Grab the data from the form
     $troopNumber = $_POST["TroopNumber"];
     $address = $_POST["PhysicalAddress"];
     $preferred = $_POST["ElectionDate"];
     $emailAddress = $_POST["EmailAddressForm"];
     $Name = $_POST["Name"];
 
-    $query = "SELECT IFNULL((SELECT * FROM ELENGOMATS WHERE EMAIL = '" . $emailAddress . "'), 'not found')";
-    $result = $db->query($query);
+    //Was supposed to find the record if it already existed so that it could be updated, but it doesnt seem to work.
+    $query = "SELECT * FROM ELENGOMATS WHERE EMAIL = '" . $emailAddress . "'";
+    $result = mysql_query($query);
     
-    if ($result != null) {
-        print "found user";
-        //$emailAddress = $_POST["EmailAddressForm"];
-        $query = "UPDATE ELENGOMATS set TROOP_NUM = " . $troopNumber . ", ADDRESS = '" . $address . "', PREFERRED_DATE = '" . $preferred . "' where EMAIL = " .$emailAddress;
-        $result = $db->query($query);
+    if (mysql_num_rows($result) >0) {
+        //Updates the record if it already exists.
+        $query = "UPDATE ELENGOMATS set TROOP_NUM = " . $troopNumber . ", ADDRESS = '" . $address . "', PREFERRED_DATE = '" . $preferred . "' where EMAIL = '" . $emailAddress . "'";
+        $result = mysql_query($query);
     }
     else {
+        //Inserts a new record
         $query = "INSERT INTO elengomats (NAME, TROOP_NUM, ADDRESS, PREFERRED_DATE, EMAIL) VALUES 
         ('" . $Name . "', " . $troopNumber . ", '" . $address . "', '" . $preferred . "', '" . $emailAddress . "')";
-        $result = $db->query($query);
+        $result = mysql_query($query);
     }
-    if ($db->error) {
-        $errorstring = $db->error;
-    }
-    else {
-        
-    }
-
     
 }
 
+//Will fill out the form if a record exists.
 if (isset($_POST['emailCheck'])) {
     $emailAddress = $_POST["EmailAddress"];
     $Name ="";
@@ -64,18 +63,18 @@ if (isset($_POST['emailCheck'])) {
     $preferred = "";
     $troopNumber = 0;
 
-    if($db->connect_error) {
+    if(!$db) {
         session_start();
         header("Location: /formError");
         exit();
      }
     $query = "SELECT * FROM ELENGOMATS WHERE EMAIL = '" . $emailAddress . "'";
-    $result = $db->query($query);
+    $result = mysql_query($query);
     $emailAddress = ""; //So the email shows up blank if nothing is found.
 
     if($result != null)
     {   
-        while($row = $result->fetch_assoc()){
+        while($row = mysql_fetch_array($result)){
             $Name = $row['NAME'];
             $emailAddress = $row['EMAIL'];
             $address = $row['ADDRESS'];
@@ -101,9 +100,6 @@ if (isset($_POST['emailCheck'])) {
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 </head>
-
-
-
 
 <body>
 <div class="bootstrap-iso">
@@ -172,9 +168,6 @@ if (isset($_POST['emailCheck'])) {
         </div>
     </div>
 </div>
-
-
-
 
 
 </body>
