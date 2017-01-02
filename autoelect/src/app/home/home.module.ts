@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TitlebarComponent } from './titlebar/titlebar.component';
+import { RouterModule } from '@angular/router';
+
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent },
+    ]),
   ],
   exports: [
-    TitlebarComponent
+    HomeComponent
   ],
   declarations: [
-    TitlebarComponent,
     HomeComponent
   ]
 })
