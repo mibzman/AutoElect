@@ -1,0 +1,396 @@
+#%RAML 1.0
+title: AutoElect
+version: 1.0
+baseUri: /api/1.0/
+
+types:
+  lodge:
+    type: object
+    description: a single lodge
+    properties:
+      id: integer
+      name: string
+      totem: string
+  election:
+    type: object
+    description: somebody going out and runing an election
+    properties:
+      troop: troop
+      elengomat: elengomat
+      backup: elengomat
+      candidates: candidate[]
+      date: datetime
+  troop:
+    type: object
+    description: where candidates come from
+    properties:
+      id:
+        type: integer
+        description: also the troop number
+      address: string
+      scoutmaster: person
+      comitteechair: person
+      meetingtime: datetime
+      averagenumber:
+        type: integer
+        description: an estimate of how many people will be present
+  person:
+    type: object
+    description: a human being
+    properties:
+      id: integer
+      name: string
+      lodgeid: integer
+      email: string
+      address?: string
+      birthdate?: datetime
+  user:
+    type: object
+    description: anonymous user data.  this data will be used for optimization of the universities class offerings
+    properties:
+      props: person
+      permission: integer
+      hash: string
+  candidate:
+    type: object
+    description: someone who is in the process of becoming an OA member
+    properties:
+      props: person
+      isyouth: boolean
+      hasbeenelected: boolean
+      hasfinishedordeal: boolean
+  elengomat:
+    type: object
+    description: a member of the election team
+    properties:
+      props: person
+      numelections: integer
+  event:
+    type: object
+    description: something like an ordeal or other pre-initation event the cannidates should be notified about
+  error:
+    properties:
+      code: integer
+      message: string
+
+/user:
+  /{userid}:
+    /login:
+      /{email}:
+        /{hash}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+    /update:
+      /hash:
+        /{hash}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /permission:
+        /{permission}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /lodgeid:
+        /{lodgeid}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /email:
+        /{email}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /address:
+        /{address}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /birthdate:
+        /{birthdate}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+  /create:
+    /{userid}:
+      /{email}:
+        /{losgeid}:
+          /{address}:
+            /{birthdate}:
+              put:
+                responses:
+                  200:
+                    body:
+                      application/json:
+                        type: user
+                  404:
+                    body:
+                      application/json:
+                        type: error
+
+
+/elengomat:
+  /{userid}:
+    /update:
+      /hash:
+        /{hash}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /permission:
+        /{permission}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /lodgeid:
+        /{lodgeid}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /email:
+        /{email}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /address:
+        /{address}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /birthdate:
+        /{birthdate}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+  /create:
+    /{userid}:
+      /{email}:
+        /{losgeid}:
+          /{address}:
+            /{birthdate}:
+              put:
+                responses:
+                  200:
+                    body:
+                      application/json:
+                        type: elengomat
+                  404:
+                    body:
+                      application/json:
+                        type: error
+/candidate:
+  /{userid}:
+    /update:
+      /hash:
+        /{hash}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /permission:
+        /{permission}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /lodgeid:
+        /{lodgeid}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /email:
+        /{email}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /address:
+        /{address}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /birthdate:
+        /{birthdate}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+      /isyouth:
+        /{isyouth}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: candidate
+              404:
+                body:
+                  application/json:
+                    type: error
+  /create:
+    /{userid}:
+      /{email}:
+        /{losgeid}:
+          /{address}:
+            /{birthdate}:
+              /{isyouth}:
+                put:
+                  responses:
+                    200:
+                      body:
+                        application/json:
+                          type: user
+                    404:
+                      body:
+                        application/json:
+                          type: error
+
+/lodge:
+  /create:
+    /{lodgeid}:
+      /{name}:
+        /{totem}:
+          put:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: user
+              404:
+                body:
+                  application/json:
+                    type: error
+
+
+/election:
+  /create:
