@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }    from '@angular/forms';
+
 import { UIModule } from '../ui/ui.module';
 
 import { HomeHeaderComponent } from '../ui/homeheader/homeheader.component';
@@ -13,6 +15,7 @@ import { LoginService } from './login/login.service';
   imports: [
     CommonModule,
     BrowserModule,
+    FormsModule,
     RouterModule.forRoot([
       { path: 'login', children: [
           { path: '', component: LoginComponent},
