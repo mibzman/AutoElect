@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomeHeaderComponent } from './homeheader/homeheader.component';
 import { AdminHeaderComponent } from './adminheader/adminheader.component';
+import { HomeFooterComponent } from './homefooter/homefooter.component';
 
 
 @NgModule({
@@ -23,11 +24,13 @@ import { AdminHeaderComponent } from './adminheader/adminheader.component';
   ],
   exports:[
     HomeHeaderComponent,
+    HomeFooterComponent,
     AdminHeaderComponent
   ],
   declarations: [
     HomeHeaderComponent,
-    AdminHeaderComponent
+    AdminHeaderComponent,
+    HomeFooterComponent
   ]
 })
 export class UIModule { }
