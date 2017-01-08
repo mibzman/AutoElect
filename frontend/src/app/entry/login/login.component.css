@@ -1,0 +1,5 @@
+/*Idealy this should be in the homeHeader component somehow but it needs to be in every component that is displayed with the
+homeheader except the homepage*/
+.contentDiv {
+  margin-top: 70px;
+}
