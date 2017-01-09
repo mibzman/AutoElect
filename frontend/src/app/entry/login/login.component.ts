@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("isLoggedIn", this.response.canLogIn.toString());
               localStorage.setItem("sessionTime", new Date().getTime().toString());
               if (localStorage.getItem("isLoggedIn") == "true"){
-                this._router.navigate(['/dash/' + this.response.lodgeName]);
+                this._router.navigate(['/admin/' + this.response.lodgeName]);
               }else{
                 this.loading = false;
                 this.error = "Username or password is incorrect.";

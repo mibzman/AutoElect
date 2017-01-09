@@ -25,12 +25,12 @@ import { HomeFooterComponent } from './homefooter/homefooter.component';
   exports:[
     HomeHeaderComponent,
     HomeFooterComponent,
-    AdminHeaderComponent
+    AdminHeaderComponent,
   ],
   declarations: [
     HomeHeaderComponent,
     AdminHeaderComponent,
-    HomeFooterComponent
+    HomeFooterComponent,
   ]
 })
 export class UIModule { }

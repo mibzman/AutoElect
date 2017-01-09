@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import { UIModule } from '../ui/ui.module';
+
 import { DashComponent } from './dash/dash.component';
+import { AdminHeaderComponent } from '../ui/adminheader/adminheader.component';
 
 import { LoginGuard } from './login-guard.service';
 
@@ -10,7 +13,16 @@ import { LoginGuard } from './login-guard.service';
   imports: [
     CommonModule,
     RouterModule.forRoot([
-      { path: 'dash/:lodgeName', canActivate: [LoginGuard],  component: DashComponent },
+      // { path: '', canActivate: [LoginGuard],  component: DashComponent },
+      // { path: 'dash/*', component: AdminHeaderComponent, outlet: 'header'}
+      { path: 'admin/:lodgeName',  canActivate: [LoginGuard], component: AdminHeaderComponent,
+        children: [
+          { path: 'dash', component: DashComponent},
+          { path: '', redirectTo: 'dash', pathMatch: 'full'},
+          // { path: '', component: AdminHeaderComponent, outlet: 'header'},
+          // { path: '', component: AdminFooterComponent, outlet: 'footer'}
+        ]
+      },
     ]),
   ],
   providers: [
