@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="04b81048-57e4-4d11-939b-b6a04391a31f" activeEnvironment="Default" name="REST Project 1" resourceRoot="" soapui-version="5.3.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="e513fa9a-5864-4e31-988f-74555a2da3ea" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.rest.actions.service.Wadl2JavaAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Java Args" value=""/>
+  <con:entry key="Output Directory" value=""/>
+  <con:entry key="Package" value=""/>
+  <con:entry key="JAXB Customization File(s)" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Automatic Package Names" value="false"/>
+</xml-fragment>]]></con:setting></con:settings><con:definitionCache type="TEXT" rootPart=""/><con:endpoints/><con:resource name="1.0" path="/api/1.0" id="5e3edec5-65af-4480-a5ec-e6adc06e4b3b"><con:settings/><con:parameters/><con:resource name="user" path="user" id="705095f5-52a4-4228-bd2f-ee3b0ddbe1fb"><con:settings/><con:parameters/><con:resource name="login" path="login" id="b8dcdba5-3019-40e0-99c6-50af352e934e"><con:settings/><con:parameters/><con:method name="login" id="d9ad1ee8-fbb3-46b0-ba50-a180c06f328c" method="GET"><con:settings/><con:parameters><con:parameter required="true"><con:name>name</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter required="true"><con:name>hash</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:request name="Request 1" id="f5fbfbda-9282-4400-8ac0-d5e6989d195a" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:8080</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="hash" value="4"/>
+  <con:entry key="name" value="admin"/>
+</con:parameters></con:request></con:method></con:resource></con:resource></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
