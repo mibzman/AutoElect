@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 
 import {ILogin} from './ILogin';
 //fuck
@@ -11,7 +12,7 @@ import {ILogin} from './ILogin';
 @Injectable()
 export class LoginService {
 
-  private _productUrl = 'api/login.json';
+  private _productUrl = 'http://localhost:8080/api/1.0/login/';
   private response: ILogin;
   constructor(private _http: Http) {}
 
@@ -21,17 +22,21 @@ export class LoginService {
     //     .do(data => console.log('All: ' +  JSON.stringify(data)))
     //     .catch(this.handleError);
     //this will be reimplemented once there's an actuial api
-    if (username == "admin"){
-      return this._http.get(this._productUrl)
-          .map((response: Response) => <ILogin> response.json())
-          .do(data => console.log('All: ' +  JSON.stringify(data)))
-          .catch(this.handleError);
-    }else{
-      return this._http.get('api/nologin.json')
-          .map((response: Response) => <ILogin> response.json())
-          .do(data => console.log('All: ' +  JSON.stringify(data)))
-          .catch(this.handleError);
-    }
+    // if (username == "admin"){
+    //
+    // }else{
+    //   return this._http.get('api/nologin.json')
+    //       .map((response: Response) => <ILogin> response.json())
+    //       .do(data => console.log('All: ' +  JSON.stringify(data)))
+    //       .catch(this.handleError);
+    // }
+
+    var url = this._productUrl + username + "?hash=" + password;
+    console.log(url);
+    return this._http.get(url)
+        .map((response: Response) => <ILogin> response.json())
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        //.catch(this.handleError);
 
   }
 
