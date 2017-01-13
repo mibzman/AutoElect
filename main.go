@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -27,10 +28,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func TroopHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func main() {
-	mux := mux.NewRouter().PathPrefix("/api/1.0/").Subrouter()
-	// staticFiles := rice.MustFindBox("frontend").HTTPBox()
-	// mux.Handle("/", http.FileServer(staticFiles))
-	mux.HandleFunc("/login/{username}", LoginHandler)
-	http.ListenAndServe(":8080", mux)
+	mx := mux.NewRouter().PathPrefix("/api/1.0/").Subrouter()
+	mx.HandleFunc("/login/{username}", LoginHandler)
+	mx.HandleFunc("/{lodgeName}/troops", TroopHandler)
+	fmt.Print("server is serving")
+	http.ListenAndServe(":8080", mx)
+	fmt.Print("server is serving")
 }
