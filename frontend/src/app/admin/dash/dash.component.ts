@@ -8,14 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DashComponent implements OnInit {
 
-  lodgeName: string;
+  LodgeName: string;
 
   constructor(private _route: ActivatedRoute,
               private _router: Router){
   }
 
   ngOnInit() {
-    this.lodgeName = this._route.snapshot.params['lodgeName'];
+    this.LodgeName = this._route.snapshot.params['LodgeName'];
   }
 
 }

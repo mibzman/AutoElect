@@ -32,11 +32,11 @@ export class LoginComponent implements OnInit {
     localStorage.setItem("loginError", "");
     this._loginService.canLogin(this.usernameHolder, this.passwordHolder)
             .subscribe(response => {
-              this.response = response[0]
-              localStorage.setItem("isLoggedIn", this.response.canLogIn.toString());
+              this.response = response
+              localStorage.setItem("isLoggedIn", this.response.PasswordCorrect.toString());
               localStorage.setItem("sessionTime", new Date().getTime().toString());
               if (localStorage.getItem("isLoggedIn") == "true"){
-                this._router.navigate(['/admin/' + this.response.lodgeName]);
+                this._router.navigate(['/admin/' + this.response.LodgeName]);
               }else{
                 this.loading = false;
                 this.error = "Username or password is incorrect.";

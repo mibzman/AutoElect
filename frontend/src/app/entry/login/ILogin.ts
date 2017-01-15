@@ -1,4 +1,4 @@
 export interface ILogin {
-  canLogIn: boolean;
-  lodgeName: string;
+  PasswordCorrect: boolean;
+  LodgeName: string;
 }

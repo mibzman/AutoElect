@@ -18,7 +18,7 @@ import { TroopsComponent } from './troops/troops.component';
     RouterModule.forRoot([
       // { path: '', canActivate: [LoginGuard],  component: DashComponent },
       // { path: 'dash/*', component: AdminHeaderComponent, outlet: 'header'}
-      { path: 'admin/:lodgeName',  canActivate: [LoginGuard], component: AdminHeaderComponent,
+      { path: 'admin/:LodgeName',  canActivate: [LoginGuard], component: AdminHeaderComponent,
         children: [
           { path: 'dash', component: DashComponent},
           { path: 'troops', component: TroopsComponent},

@@ -1,0 +1,50 @@
+<h2>
+  Edit Troop Data
+</h2>
+<table class='table'>
+                <thead>
+                    <tr>
+                      <th></th>
+                        <th>Troop Number</th>
+                        <th>Address</th>
+                        <th>Scoutmaster</th>
+                        <th>Scoutmaster Email</th>
+                        <th>Comittee Chair</th>
+                        <th>Committee Chair Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <!-- <p *ngIf='products && .length'>test</p> -->
+                    <tr *ngFor='let Troop of Troops'>
+                      <button class='btn btn-primary'
+                        (click)='toggleSave(Troop)'>
+                      {{Troop.IsEditing ? 'Save' : 'Edit'}}
+                      </button>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.ID}}</td>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.TroopAddress}}</td>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.Scoutmaster}}</td>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.ScoutmasterEmail}}</td>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.ComitteeChair}}</td>
+                      <td *ngIf='!Troop.IsEditing'>{{Troop.CommitteeChairEmail}}</td>
+
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.ID'/>
+                      </td>
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.TroopAddress'/>
+                      </td>
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.Scoutmaster'/>
+                      </td>
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.ScoutmasterEmail'/>
+                      </td>
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.ComitteeChair'/>
+                      </td>
+                      <td *ngIf='Troop.IsEditing'>
+                        <input type='text' class="form-control" [(ngModel)]='Troop.CommitteeChairEmail'/>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
