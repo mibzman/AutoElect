@@ -6,10 +6,12 @@ import { FormsModule }   from '@angular/forms';
 import { UIModule } from '../ui/ui.module';
 
 import { DashComponent } from './dash/dash.component';
+import { InviteComponent } from './invite/invite.component'
 import { AdminHeaderComponent } from '../ui/adminheader/adminheader.component';
+import { TroopsComponent } from './troops/troops.component';
 
 import { LoginGuard } from './login-guard.service';
-import { TroopsComponent } from './troops/troops.component';
+import { InviteService } from './invite/invite.service';
 
 @NgModule({
   imports: [
@@ -22,15 +24,16 @@ import { TroopsComponent } from './troops/troops.component';
         children: [
           { path: 'dash', component: DashComponent},
           { path: 'troops', component: TroopsComponent},
+          { path: 'invite', component: InviteComponent},
           { path: '', redirectTo: 'dash', pathMatch: 'full'},
-          // { path: '', component: AdminHeaderComponent, outlet: 'header'},
-          // { path: '', component: AdminFooterComponent, outlet: 'footer'}
+
         ]
       },
     ]),
   ],
   providers: [
-    LoginGuard
+    LoginGuard,
+    InviteService
   ],
   exports: [
     DashComponent,
@@ -38,6 +41,7 @@ import { TroopsComponent } from './troops/troops.component';
   declarations: [
     DashComponent,
     TroopsComponent,
+    InviteComponent,
   ]
 })
 export class AdminModule { }
