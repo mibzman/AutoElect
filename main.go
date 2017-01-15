@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -90,7 +91,12 @@ func main() {
 		}
 		defer r.Body.Close()
 
-		//send email!
+		err = Email(data.Email, "Welcome to AutoElect", data.Message)
+		if err != nil {
+			log.Println("invite: Failed to send email:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
 		w.WriteHeader(http.StatusOK)
 
@@ -121,4 +127,37 @@ func Init(db *gorm.DB) {
 	if !db.HasTable(&Troop{}) {
 		db.CreateTable(&Troop{})
 	}
+}
+
+type SmtpTemplateData struct {
+	From    string
+	To      string
+	Subject string
+	Body    string
+}
+
+func Email(Address, Subject, Body string) error {
+	auth := smtp.PlainAuth(
+		"",
+		"autoelect17@gmail.com",
+		"Elengomat",
+		"smtp.gmail.com",
+	)
+
+	//sending
+	err := smtp.SendMail(
+		"smtp.gmail.com:587",
+		auth,
+		"autelect17@gmail.com",
+		[]string{Address},
+		//doc.Bytes(),
+		[]byte("To: you cool guy\r\n"+
+			"Subject: "+Subject+"\r\n"+
+			"\r\n"+
+			Body+"\r\n"),
+	)
+	if err != nil {
+		return err
+	}
+	return nil
 }
