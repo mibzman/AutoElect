@@ -15,11 +15,6 @@ func TroopHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-type ILogin struct {
-	PasswordCorrect bool
-	LodgeName       string
-}
-
 func main() {
 	//init database
 
@@ -49,7 +44,13 @@ func main() {
 				if value[0] == admin.Hash {
 					var lodge Lodge
 					db.Where("id = ?", admin.LodgeID).First(&lodge)
-					result := ILogin{true, lodge.Name}
+					result := struct {
+						PasswordCorrect bool
+						LodgeName       string
+					}{
+						true,
+						lodge.Name,
+					}
 					err := encoder.Encode(result)
 					if err != nil {
 						log.Println("Failed to encode json:", err)
@@ -57,7 +58,13 @@ func main() {
 						return
 					}
 				} else {
-					result := ILogin{false, "blarg"}
+					result := struct {
+						PasswordCorrect bool
+						LodgeName       string
+					}{
+						false,
+						"",
+					}
 					err := encoder.Encode(result)
 					if err != nil {
 						log.Println("Failed to encode json:", err)
@@ -69,6 +76,25 @@ func main() {
 		}
 	})
 	mx.HandleFunc("/{LodgeName}/troops", TroopHandler)
+	mx.HandleFunc("/{LodgeName}/invite", func(w http.ResponseWriter, r *http.Request) {
+		decoder := json.NewDecoder(r.Body)
+		var data struct {
+			Email   string
+			Message string
+		}
+		err := decoder.Decode(&data)
+		if err != nil {
+			log.Println("invite: Failed to read json:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer r.Body.Close()
+
+		//send email!
+
+		w.WriteHeader(http.StatusOK)
+
+	}).Methods("PUT")
 	fmt.Print("server is serving")
 	http.ListenAndServe(":8080", mx)
 	fmt.Print("server is serving")
@@ -95,35 +121,4 @@ func Init(db *gorm.DB) {
 	if !db.HasTable(&Troop{}) {
 		db.CreateTable(&Troop{})
 	}
-
-	// lodge := Lodge{
-	// 	ID:   17,
-	// 	Name: "Cuyahoga",
-	// }
-	//
-	// db.NewRecord(lodge)
-	// db.Create(&lodge)
-	//
-	// var resultLodge Lodge
-	// db.Where("ID = ?", 17).First(&resultLodge)
-	// user := Admin{
-	// 	Person: Person{
-	// 		FirstName: "Sam",
-	// 		LastName:  "Borick",
-	// 		BSARank:   "Eagle",
-	// 		OARank:    2,
-	// 		Address:   "123 blarg st",
-	// 		Email:     "Boick.borick@borick.com",
-	// 		Birthdate: time.Now(),
-	// 		LodgeID:   17,
-	// 	},
-	// 	Permission: 4,
-	// 	Hash:       "21232f297a57a5a743894a0e4a801fc3",
-	// }
-	// db.NewRecord(user)
-	// db.Create(&user)
-
-	//db.Where("ID = ?", 17).First(&resultLodge)
-	//fmt.Println("test")
-	//fmt.Println("Admins: ", resultLodge.Admins[0])
 }

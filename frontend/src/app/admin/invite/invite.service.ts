@@ -22,8 +22,9 @@ export class InviteService {
 
   sendEmail(e:string, m:string){
     let url = this._productUrl + this.LodgeName + "/invite";
-    let email = {email: e, message: m};
+    let email = {Email: e, Message: m};
     let body = JSON.stringify(email);
+    console.log(body);
     let headers = new Headers({ 'Content-Type': 'application/json' });
 
     return this._http.put(url, body, headers)
