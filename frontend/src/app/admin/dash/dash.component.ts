@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./dash.component.css']
 })
 export class DashComponent implements OnInit {
-
   LodgeName: string;
 
   constructor(private _route: ActivatedRoute,
@@ -15,7 +14,6 @@ export class DashComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.LodgeName = this._route.snapshot.params['LodgeName'];
   }
 
 }

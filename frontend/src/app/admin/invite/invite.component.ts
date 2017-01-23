@@ -33,7 +33,7 @@ export class InviteComponent implements OnInit {
          this.success = "Email Sent"
        },
        error => {
-         this.error = <any>error
+         this.error = <any>error;
          this.loading = false;
        }
     );

@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminHeaderComponent implements OnInit {
 
   LodgeName:string;
+  ShowBar: boolean;
 
   constructor(private _route: ActivatedRoute,
                 private _router: Router) {
@@ -16,6 +17,11 @@ export class AdminHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.LodgeName = this._route.snapshot.params['LodgeName'];
+    this.ShowBar = true;
+  }
+
+  clicked(){
+    this.ShowBar = !this.ShowBar;
   }
 
 }

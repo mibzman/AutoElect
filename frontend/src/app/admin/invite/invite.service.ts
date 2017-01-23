@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
@@ -10,25 +9,19 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class InviteService {
 
-  private LodgeName: string;
   private _productUrl = 'http://localhost:8080/api/1.0/'
 
   //http://stackoverflow.com/q/35110690/5971811
-  constructor(private _http: Http,
-              private _route: ActivatedRoute) {
-     //+ LodgeName + '/invite';
-    this.LodgeName = this._route.snapshot.params['LodgeName'];
-  }
+  constructor(private _http: Http) {}
 
-  sendEmail(e:string, m:string){
-    let url = this._productUrl + this.LodgeName + "/invite";
-    let email = {Email: e, Message: m};
-    let body = JSON.stringify(email);
+  sendEmail(email:string, message:string, lodgeName:string){
+    let url = this._productUrl + lodgeName + "/invite";
+    let emailObj = {Email: email, Message: message};
+    let body = JSON.stringify(emailObj);
     console.log(body);
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    //let headers = new Headers({ 'Content-Type': 'application/json' });
 
-    return this._http.put(url, body, headers)
-      .map((res: Response) => res.json());
+    return this._http.post(url, body);
   }
 
   private handleError(error: Response) {
